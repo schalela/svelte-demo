@@ -18,37 +18,38 @@ export default {
     output: config.client.output(),
     plugins: [
       replace({
-      'process.browser': true,
-      'process.env.NODE_ENV': JSON.stringify(mode)
-    }),
+        'process.browser': true,
+        'process.env.NODE_ENV': JSON.stringify(mode)
+      }),
+      json(),
       svelte({
-      dev,
-      hydratable: true,
-      emitCss: true
-    }),
+        dev,
+        hydratable: true,
+        emitCss: true
+      }),
       resolve(),
       commonjs(),
 
       legacy && babel({
-      extensions: ['.js', '.mjs', '.html', '.svelte'],
-      runtimeHelpers: true,
-      exclude: ['node_modules/@babel/**'],
-      presets: [
-      ['@babel/preset-env', {
-      targets: '> 0.25%, not dead'
-    }]
-    ],
-      plugins: [
-      '@babel/plugin-syntax-dynamic-import',
-      ['@babel/plugin-transform-runtime', {
-      useESModules: true
-    }]
-    ]
-    }),
+        extensions: ['.js', '.mjs', '.html', '.svelte'],
+        runtimeHelpers: true,
+        exclude: ['node_modules/@babel/**'],
+        presets: [
+          ['@babel/preset-env', {
+            targets: '> 0.25%, not dead'
+          }]
+        ],
+        plugins: [
+          '@babel/plugin-syntax-dynamic-import',
+          ['@babel/plugin-transform-runtime', {
+            useESModules: true
+          }]
+        ]
+      }),
 
       !dev && terser({
-      module: true
-    })
+        module: true
+      })
     ]
   },
 
@@ -57,14 +58,14 @@ export default {
     output: config.server.output(),
     plugins: [
       replace({
-      'process.browser': false,
-      'process.env.NODE_ENV': JSON.stringify(mode)
-    }),
+        'process.browser': false,
+        'process.env.NODE_ENV': JSON.stringify(mode)
+      }),
       json(),
       svelte({
-      generate: 'ssr',
-      dev
-    }),
+        generate: 'ssr',
+        dev
+      }),
       resolve(),
       commonjs()
     ],
@@ -79,9 +80,9 @@ export default {
     plugins: [
       resolve(),
       replace({
-      'process.browser': true,
-      'process.env.NODE_ENV': JSON.stringify(mode)
-    }),
+        'process.browser': true,
+        'process.env.NODE_ENV': JSON.stringify(mode)
+      }),
       commonjs(),
       !dev && terser()
     ]
