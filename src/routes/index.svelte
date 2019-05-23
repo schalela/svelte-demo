@@ -116,6 +116,7 @@
 </style>
 
 <main>
+  <title>Svelte SSR Demo</title>
   <content>
     <page-title>Live Results</page-title>
     <ul>
