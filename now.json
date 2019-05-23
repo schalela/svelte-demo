@@ -6,5 +6,8 @@
       "use": "now-sapper"
     }
   ],
+  "regions": [
+    "syd1"
+  ],
   "routes": [{ "src": "/(.*)", "dest": "__sapper__/build/index.js" }]
 }
