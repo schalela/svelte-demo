@@ -15,7 +15,8 @@
     });
 
     return {
-      cache: await client.query({ query: FIXTURES, variables: { date: slug } })
+      cache: await client.query({ query: FIXTURES, variables: { date: slug } }),
+      date: slug
     };
   }
 </script>
@@ -24,6 +25,7 @@
   import { getClient, restore, query } from "svelte-apollo";
 
   export let cache;
+  export let date;
   restore(client, FIXTURES, cache.data);
 
   const fixtures = query(client, { query: FIXTURES });
@@ -124,6 +126,7 @@
 
 <main>
   <title>Svelte SSR Demo</title>
+  <date>{date}</date>
   <content>
     <page-title>Live Results</page-title>
     <ul>
