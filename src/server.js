@@ -13,5 +13,7 @@ polka() // You can also use Express
 		sapper.middleware()
 	)
 	.listen(PORT, err => {
-		if (err) console.log('error', err);
-	});
+  if (err) console.log('error', err);
+});
+
+export default app.handler;
