@@ -57,11 +57,18 @@
     margin: 0;
   }
 
-  page-title {
+  h1 {
     font-size: 32px;
     font-weight: 500;
     color: white;
     margin-bottom: 32px;
+  }
+
+  h2 {
+    font-size: 20px;
+    color: white;
+    margin-bottom: 48px;
+    font-weight: 500;
   }
   li {
     display: flex;
@@ -126,9 +133,9 @@
 
 <main>
   <title>Svelte SSR Demo</title>
-  <date>{date}</date>
   <content>
-    <page-title>Live Results</page-title>
+    <h1>Final Results</h1>
+    <h2>{date}</h2>
     <ul>
       {#await $fixtures}
         <li>Loading...</li>

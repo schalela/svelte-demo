@@ -54,7 +54,7 @@
     margin: 0;
   }
 
-  page-title {
+  h1 {
     font-size: 32px;
     font-weight: 500;
     color: white;
@@ -123,7 +123,7 @@
 <main>
   <title>Svelte SSR Demo</title>
   <content>
-    <page-title>Live Results</page-title>
+    <h1>Live Results</h1>
     <ul>
       {#await $live}
         <li>Loading...</li>
