@@ -5,6 +5,9 @@ query live {
   fixtures: live {
     fixture_id
     league_id
+    league {
+      logo
+    }
     homeTeam
     awayTeam
     statusShort

@@ -13452,147 +13452,6 @@ function toBuffer (chunk, encoding) {
 }
 compression_1.filter = filter;
 
-// Ordinarily, you'd generate this data from markdown files in your
-// repo, or fetch them from a database of some kind. But in order to
-// avoid unnecessary dependencies in the starter template, and in the
-// service of obviousness, we're just going to leave it here.
-
-// This file is called `_posts.js` rather than `posts.js`, because
-// we don't want to create an `/blog/posts` route — the leading
-// underscore tells Sapper not to do that.
-
-const posts = [
-	{
-		title: 'What is Sapper?',
-		slug: 'what-is-sapper',
-		html: `
-			<p>First, you have to know what <a href='https://svelte.dev'>Svelte</a> is. Svelte is a UI framework with a bold new idea: rather than providing a library that you write code with (like React or Vue, for example), it's a compiler that turns your components into highly optimized vanilla JavaScript. If you haven't already read the <a href='https://svelte.dev/blog/frameworks-without-the-framework'>introductory blog post</a>, you should!</p>
-
-			<p>Sapper is a Next.js-style framework (<a href='blog/how-is-sapper-different-from-next'>more on that here</a>) built around Svelte. It makes it embarrassingly easy to create extremely high performance web apps. Out of the box, you get:</p>
-
-			<ul>
-				<li>Code-splitting, dynamic imports and hot module replacement, powered by webpack</li>
-				<li>Server-side rendering (SSR) with client-side hydration</li>
-				<li>Service worker for offline support, and all the PWA bells and whistles</li>
-				<li>The nicest development experience you've ever had, or your money back</li>
-			</ul>
-
-			<p>It's implemented as Express middleware. Everything is set up and waiting for you to get started, but you keep complete control over the server, service worker, webpack config and everything else, so it's as flexible as you need it to be.</p>
-		`
-	},
-
-	{
-		title: 'How to use Sapper',
-		slug: 'how-to-use-sapper',
-		html: `
-			<h2>Step one</h2>
-			<p>Create a new project, using <a href='https://github.com/Rich-Harris/degit'>degit</a>:</p>
-
-			<pre><code>npx degit sveltejs/sapper-template#rollup my-app
-			cd my-app
-			npm install # or yarn!
-			npm run dev
-			</code></pre>
-
-			<h2>Step two</h2>
-			<p>Go to <a href='http://localhost:3000'>localhost:3000</a>. Open <code>my-app</code> in your editor. Edit the files in the <code>src/routes</code> directory or add new ones.</p>
-
-			<h2>Step three</h2>
-			<p>...</p>
-
-			<h2>Step four</h2>
-			<p>Resist overdone joke formats.</p>
-		`
-	},
-
-	{
-		title: 'Why the name?',
-		slug: 'why-the-name',
-		html: `
-			<p>In war, the soldiers who build bridges, repair roads, clear minefields and conduct demolitions — all under combat conditions — are known as <em>sappers</em>.</p>
-
-			<p>For web developers, the stakes are generally lower than those for combat engineers. But we face our own hostile environment: underpowered devices, poor network connections, and the complexity inherent in front-end engineering. Sapper, which is short for <strong>S</strong>velte <strong>app</strong> mak<strong>er</strong>, is your courageous and dutiful ally.</p>
-		`
-	},
-
-	{
-		title: 'How is Sapper different from Next.js?',
-		slug: 'how-is-sapper-different-from-next',
-		html: `
-			<p><a href='https://github.com/zeit/next.js'>Next.js</a> is a React framework from <a href='https://zeit.co'>Zeit</a>, and is the inspiration for Sapper. There are a few notable differences, however:</p>
-
-			<ul>
-				<li>It's powered by <a href='https://svelte.dev'>Svelte</a> instead of React, so it's faster and your apps are smaller</li>
-				<li>Instead of route masking, we encode route parameters in filenames. For example, the page you're looking at right now is <code>src/routes/blog/[slug].html</code></li>
-				<li>As well as pages (Svelte components, which render on server or client), you can create <em>server routes</em> in your <code>routes</code> directory. These are just <code>.js</code> files that export functions corresponding to HTTP methods, and receive Express <code>request</code> and <code>response</code> objects as arguments. This makes it very easy to, for example, add a JSON API such as the one <a href='blog/how-is-sapper-different-from-next.json'>powering this very page</a></li>
-				<li>Links are just <code>&lt;a&gt;</code> elements, rather than framework-specific <code>&lt;Link&gt;</code> components. That means, for example, that <a href='blog/how-can-i-get-involved'>this link right here</a>, despite being inside a blob of HTML, works with the router as you'd expect.</li>
-			</ul>
-		`
-	},
-
-	{
-		title: 'How can I get involved?',
-		slug: 'how-can-i-get-involved',
-		html: `
-			<p>We're so glad you asked! Come on over to the <a href='https://github.com/sveltejs/svelte'>Svelte</a> and <a href='https://github.com/sveltejs/sapper'>Sapper</a> repos, and join us in the <a href='https://svelte.dev/chat'>Discord chatroom</a>. Everyone is welcome, especially you!</p>
-		`
-	}
-];
-
-posts.forEach(post => {
-	post.html = post.html.replace(/^\t{3}/gm, '');
-});
-
-const contents = JSON.stringify(posts.map(post => {
-	return {
-		title: post.title,
-		slug: post.slug
-	};
-}));
-
-function get(req, res) {
-	res.writeHead(200, {
-		'Content-Type': 'application/json'
-	});
-
-	res.end(contents);
-}
-
-var route_0 = /*#__PURE__*/Object.freeze({
-	get: get
-});
-
-const lookup = new Map();
-posts.forEach(post => {
-	lookup.set(post.slug, JSON.stringify(post));
-});
-
-function get$1(req, res, next) {
-	// the `slug` parameter is available because
-	// this file is called [slug].json.js
-	const { slug } = req.params;
-
-	if (lookup.has(slug)) {
-		res.writeHead(200, {
-			'Content-Type': 'application/json'
-		});
-
-		res.end(lookup.get(slug));
-	} else {
-		res.writeHead(404, {
-			'Content-Type': 'application/json'
-		});
-
-		res.end(JSON.stringify({
-			message: `Not found`
-		}));
-	}
-}
-
-var route_1 = /*#__PURE__*/Object.freeze({
-	get: get$1
-});
-
 function is_promise(value) {
 	return value && typeof value.then === 'function';
 }
@@ -13714,104 +13573,6 @@ function get_store_value(store) {
 	store.subscribe(_ => value = _)();
 	return value;
 }
-
-/* src/routes/index.svelte generated by Svelte v3.4.2 */
-
-const css = {
-	code: "h1.svelte-1kk9opm,figure.svelte-1kk9opm,p.svelte-1kk9opm{text-align:center;margin:0 auto}h1.svelte-1kk9opm{font-size:2.8em;text-transform:uppercase;font-weight:700;margin:0 0 0.5em 0}figure.svelte-1kk9opm{margin:0 0 1em 0}img.svelte-1kk9opm{width:100%;max-width:400px;margin:0 0 1em 0}p.svelte-1kk9opm{margin:1em auto}@media(min-width: 480px){h1.svelte-1kk9opm{font-size:4em}}",
-	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<style>\\n\\th1, figure, p {\\n\\t\\ttext-align: center;\\n\\t\\tmargin: 0 auto;\\n\\t}\\n\\n\\th1 {\\n\\t\\tfont-size: 2.8em;\\n\\t\\ttext-transform: uppercase;\\n\\t\\tfont-weight: 700;\\n\\t\\tmargin: 0 0 0.5em 0;\\n\\t}\\n\\n\\tfigure {\\n\\t\\tmargin: 0 0 1em 0;\\n\\t}\\n\\n\\timg {\\n\\t\\twidth: 100%;\\n\\t\\tmax-width: 400px;\\n\\t\\tmargin: 0 0 1em 0;\\n\\t}\\n\\n\\tp {\\n\\t\\tmargin: 1em auto;\\n\\t}\\n\\n\\t@media (min-width: 480px) {\\n\\t\\th1 {\\n\\t\\t\\tfont-size: 4em;\\n\\t\\t}\\n\\t}\\n</style>\\n\\n<svelte:head>\\n\\t<title>Sapper project template</title>\\n</svelte:head>\\n\\n<h1>Great success!</h1>\\n\\n<figure>\\n\\t<img alt='Borat' src='great-success.png'>\\n\\t<figcaption>HIGH FIVE!</figcaption>\\n</figure>\\n\\n<p><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>\\n\"],\"names\":[],\"mappings\":\"AACC,iBAAE,CAAE,qBAAM,CAAE,CAAC,eAAC,CAAC,AACd,UAAU,CAAE,MAAM,CAClB,MAAM,CAAE,CAAC,CAAC,IAAI,AACf,CAAC,AAED,EAAE,eAAC,CAAC,AACH,SAAS,CAAE,KAAK,CAChB,cAAc,CAAE,SAAS,CACzB,WAAW,CAAE,GAAG,CAChB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,AACpB,CAAC,AAED,MAAM,eAAC,CAAC,AACP,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,AAClB,CAAC,AAED,GAAG,eAAC,CAAC,AACJ,KAAK,CAAE,IAAI,CACX,SAAS,CAAE,KAAK,CAChB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,AAClB,CAAC,AAED,CAAC,eAAC,CAAC,AACF,MAAM,CAAE,GAAG,CAAC,IAAI,AACjB,CAAC,AAED,MAAM,AAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AAC1B,EAAE,eAAC,CAAC,AACH,SAAS,CAAE,GAAG,AACf,CAAC,AACF,CAAC\"}"
-};
-
-const Index = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	$$result.css.add(css);
-
-	return `${($$result.head += `<title>Sapper project template</title>`, "")}
-
-	<h1 class="svelte-1kk9opm">Great success!</h1>
-
-	<figure class="svelte-1kk9opm">
-		<img alt="Borat" src="great-success.png" class="svelte-1kk9opm">
-		<figcaption>HIGH FIVE!</figcaption>
-	</figure>
-
-	<p class="svelte-1kk9opm"><strong>Try editing this file (src/routes/index.svelte) to test live reloading.</strong></p>`;
-});
-
-/* src/routes/about.svelte generated by Svelte v3.4.2 */
-
-const About = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	return `${($$result.head += `<title>About</title>`, "")}
-
-	<h1>About this site</h1>
-
-	<p>This is the 'about' page. There's not much here.</p>`;
-});
-
-/* src/routes/blog/index.svelte generated by Svelte v3.4.2 */
-
-const css$1 = {
-	code: "ul.svelte-1frg2tf{margin:0 0 1em 0;line-height:1.5}",
-	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n\\texport function preload({ params, query }) {\\n\\t\\treturn this.fetch(`blog.json`).then(r => r.json()).then(posts => {\\n\\t\\t\\treturn { posts };\\n\\t\\t});\\n\\t}\\n</script>\\n\\n<script>\\n\\texport let posts;\\n</script>\\n\\n<style>\\n\\tul {\\n\\t\\tmargin: 0 0 1em 0;\\n\\t\\tline-height: 1.5;\\n\\t}\\n</style>\\n\\n<svelte:head>\\n\\t<title>Blog</title>\\n</svelte:head>\\n\\n<h1>Recent posts</h1>\\n\\n<ul>\\n\\t{#each posts as post}\\n\\t\\t<!-- we're using the non-standard `rel=prefetch` attribute to\\n\\t\\t\\t\\ttell Sapper to load the data for the page as soon as\\n\\t\\t\\t\\tthe user hovers over the link or taps it, instead of\\n\\t\\t\\t\\twaiting for the 'click' event -->\\n\\t\\t<li><a rel='prefetch' href='blog/{post.slug}'>{post.title}</a></li>\\n\\t{/each}\\n</ul>\"],\"names\":[],\"mappings\":\"AAaC,EAAE,eAAC,CAAC,AACH,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,CAAC,CACjB,WAAW,CAAE,GAAG,AACjB,CAAC\"}"
-};
-
-function preload({ params, query }) {
-	return this.fetch(`blog.json`).then(r => r.json()).then(posts => {
-		return { posts };
-	});
-}
-
-const Index$1 = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let { posts } = $$props;
-
-	if ($$props.posts === void 0 && $$bindings.posts && posts !== void 0) $$bindings.posts(posts);
-
-	$$result.css.add(css$1);
-
-	return `${($$result.head += `<title>Blog</title>`, "")}
-
-	<h1>Recent posts</h1>
-
-	<ul class="svelte-1frg2tf">
-		${each(posts, (post) => `
-			<li><a rel="prefetch" href="blog/${escape(post.slug)}">${escape(post.title)}</a></li>`)}
-	</ul>`;
-});
-
-/* src/routes/blog/[slug].svelte generated by Svelte v3.4.2 */
-
-const css$2 = {
-	code: ".content.svelte-gnxal1 h2{font-size:1.4em;font-weight:500}.content.svelte-gnxal1 pre{background-color:#f9f9f9;box-shadow:inset 1px 1px 5px rgba(0,0,0,0.05);padding:0.5em;border-radius:2px;overflow-x:auto}.content.svelte-gnxal1 pre code{background-color:transparent;padding:0}.content.svelte-gnxal1 ul{line-height:1.5}.content.svelte-gnxal1 li{margin:0 0 0.5em 0}",
-	map: "{\"version\":3,\"file\":\"[slug].svelte\",\"sources\":[\"[slug].svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n\\texport async function preload({ params, query }) {\\n\\t\\t// the `slug` parameter is available because\\n\\t\\t// this file is called [slug].html\\n\\t\\tconst res = await this.fetch(`blog/${params.slug}.json`);\\n\\t\\tconst data = await res.json();\\n\\n\\t\\tif (res.status === 200) {\\n\\t\\t\\treturn { post: data };\\n\\t\\t} else {\\n\\t\\t\\tthis.error(res.status, data.message);\\n\\t\\t}\\n\\t}\\n</script>\\n\\n<script>\\n\\texport let post;\\n</script>\\n\\n<style>\\n\\t/*\\n\\t\\tBy default, CSS is locally scoped to the component,\\n\\t\\tand any unused styles are dead-code-eliminated.\\n\\t\\tIn this page, Svelte can't know which elements are\\n\\t\\tgoing to appear inside the {{{post.html}}} block,\\n\\t\\tso we have to use the :global(...) modifier to target\\n\\t\\tall elements inside .content\\n\\t*/\\n\\t.content :global(h2) {\\n\\t\\tfont-size: 1.4em;\\n\\t\\tfont-weight: 500;\\n\\t}\\n\\n\\t.content :global(pre) {\\n\\t\\tbackground-color: #f9f9f9;\\n\\t\\tbox-shadow: inset 1px 1px 5px rgba(0,0,0,0.05);\\n\\t\\tpadding: 0.5em;\\n\\t\\tborder-radius: 2px;\\n\\t\\toverflow-x: auto;\\n\\t}\\n\\n\\t.content :global(pre) :global(code) {\\n\\t\\tbackground-color: transparent;\\n\\t\\tpadding: 0;\\n\\t}\\n\\n\\t.content :global(ul) {\\n\\t\\tline-height: 1.5;\\n\\t}\\n\\n\\t.content :global(li) {\\n\\t\\tmargin: 0 0 0.5em 0;\\n\\t}\\n</style>\\n\\n<svelte:head>\\n\\t<title>{post.title}</title>\\n</svelte:head>\\n\\n<h1>{post.title}</h1>\\n\\n<div class='content'>\\n\\t{@html post.html}\\n</div>\"],\"names\":[],\"mappings\":\"AA4BC,sBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACrB,SAAS,CAAE,KAAK,CAChB,WAAW,CAAE,GAAG,AACjB,CAAC,AAED,sBAAQ,CAAC,AAAQ,GAAG,AAAE,CAAC,AACtB,gBAAgB,CAAE,OAAO,CACzB,UAAU,CAAE,KAAK,CAAC,GAAG,CAAC,GAAG,CAAC,GAAG,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,IAAI,CAAC,CAC9C,OAAO,CAAE,KAAK,CACd,aAAa,CAAE,GAAG,CAClB,UAAU,CAAE,IAAI,AACjB,CAAC,AAED,sBAAQ,CAAC,AAAQ,GAAG,AAAC,CAAC,AAAQ,IAAI,AAAE,CAAC,AACpC,gBAAgB,CAAE,WAAW,CAC7B,OAAO,CAAE,CAAC,AACX,CAAC,AAED,sBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACrB,WAAW,CAAE,GAAG,AACjB,CAAC,AAED,sBAAQ,CAAC,AAAQ,EAAE,AAAE,CAAC,AACrB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,AACpB,CAAC\"}"
-};
-
-async function preload$1({ params, query }) {
-	// the `slug` parameter is available because
-	// this file is called [slug].html
-	const res = await this.fetch(`blog/${params.slug}.json`);
-	const data = await res.json();
-
-	if (res.status === 200) {
-		return { post: data };
-	} else {
-		this.error(res.status, data.message);
-	}
-}
-
-const Slug = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let { post } = $$props;
-
-	if ($$props.post === void 0 && $$bindings.post && post !== void 0) $$bindings.post(post);
-
-	$$result.css.add(css$2);
-
-	return `${($$result.head += `<title>${escape(post.title)}</title>`, "")}
-
-	<h1>${escape(post.title)}</h1>
-
-	<div class="content svelte-gnxal1">
-		${post.html}
-	</div>`;
-});
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation. All rights reserved.
@@ -23785,6 +23546,9 @@ query live {
   fixtures: live {
     fixture_id
     league_id
+    league {
+      logo
+    }
     homeTeam
     awayTeam
     statusShort
@@ -23984,21 +23748,22 @@ function query(client, options) {
     };
 }
 
-/* src/routes/live.svelte generated by Svelte v3.4.2 */
+/* src/routes/index.svelte generated by Svelte v3.4.2 */
 
-const css$3 = {
-	code: "main.svelte-14rfua7,content.svelte-14rfua7{font-family:'Inter', sans-serif;margin:0}content.svelte-14rfua7{padding:48px 0}li.svelte-14rfua7{display:flex;justify-content:space-between;box-sizing:border-box;width:640px;max-width:calc(100% - 32px);font-size:16px;padding:32px;border-radius:8px;margin-bottom:16px;place-items:center;background:white;box-shadow:0 8px 16px 0 rgba(0,0,0,0.3)}team.svelte-14rfua7{width:35%;text-align:center}team-name.svelte-14rfua7{font-size:14px;margin:0}team-logo.svelte-14rfua7{display:block;margin:0 auto;width:64px;height:64px;margin-bottom:16px;background:#f2f2f2;border-radius:32px}goals.svelte-14rfua7{display:block;font-weight:500;font-size:32px;line-height:64px;margin:0 0 16px}score.svelte-14rfua7{width:30%;text-align:center}status.svelte-14rfua7{display:block;font-size:14px;color:#999}",
-	map: "{\"version\":3,\"file\":\"live.svelte\",\"sources\":[\"live.svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n  import ApolloClient, { gql } from 'apollo-boost';\\n  import { LIVE } from '../data';\\n  \\n  let client;\\n  export async function preload() {\\n    client = new ApolloClient({\\n      uri: 'https://emjxn6xptvbvlhcocrhq7gwhoy.appsync-api.ap-southeast-2.amazonaws.com/graphql',\\n      headers: {\\n        'x-api-key': 'da2-htijskntwzehlai3cbhmt7c24e'\\n      },\\n      fetch: this.fetch\\n    });\\n\\n    return {\\n      cache: await client.query({ query: LIVE })\\n    };\\n  }\\n</script>\\n<script>\\n  import { getClient, restore, query } from 'svelte-apollo';\\n  \\n  export let cache;\\n  restore(client, LIVE, cache.data);\\n\\n  const live = query(client, { query: LIVE });\\n</script>\\n\\n<style>\\n  main, content {\\n    font-family: 'Inter', sans-serif;\\n    margin: 0;\\n  }\\n\\n  content {\\n    padding: 48px 0;\\n  }\\n\\nli {\\n  display: flex;\\n  justify-content: space-between;\\n  box-sizing: border-box;\\n  width: 640px;\\n  max-width: calc(100% - 32px);\\n  font-size: 16px;\\n  padding: 32px;\\n  border-radius: 8px;\\n  margin-bottom: 16px;\\n  place-items: center;\\n  background: white;\\n  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.3);\\n}\\n\\nteam {\\n  width: 35%;\\n  text-align: center;\\n}\\n\\nteam-name {\\n  font-size: 14px;\\n  margin: 0;\\n}\\n\\nteam-logo {\\n  display: block;\\n  margin: 0 auto;\\n  width: 64px;\\n  height: 64px;\\n  margin-bottom: 16px;\\n  background: #f2f2f2;\\n  border-radius: 32px;\\n}\\n\\ngoals {\\n  display: block;\\n  font-weight: 500;\\n  font-size: 32px;\\n  line-height: 64px;\\n  margin: 0 0 16px; \\n}\\n\\nscore {\\n  width: 30%;\\n  text-align: center;\\n}\\n\\nstatus {\\n  display: block;\\n  font-size: 14px;\\n  color: #999;\\n}\\n</style>\\n\\n<main>\\n  <content>\\n    <ul>\\n    {#await $live}\\n      <li>Loading...</li>\\n    {:then result}\\n      {#each result.data.fixtures as fixture (fixture.fixture_id)}\\n        <li>\\n          <team>\\n            <team-logo></team-logo>\\n            <team-name>{fixture.homeTeam}</team-name>\\n          </team>\\n          <score>\\n            <goals>{fixture.goalsHomeTeam} – {fixture.goalsAwayTeam}</goals>\\n            <status>{fixture.statusShort}</status>\\n          </score>\\n          <team>\\n            <team-logo></team-logo>\\n            <team-name>{fixture.awayTeam}</team-name>\\n          </team>\\n        </li>\\n      {:else}\\n        <li>No games live</li>\\n      {/each}\\n    {:catch error}\\n      <li>Error loading games: {error}</li>\\n    {/await}\\n    </ul>\\n  </content>\\n</main>\\n\"],\"names\":[],\"mappings\":\"AA6BE,mBAAI,CAAE,OAAO,eAAC,CAAC,AACb,WAAW,CAAE,OAAO,CAAC,CAAC,UAAU,CAChC,MAAM,CAAE,CAAC,AACX,CAAC,AAED,OAAO,eAAC,CAAC,AACP,OAAO,CAAE,IAAI,CAAC,CAAC,AACjB,CAAC,AAEH,EAAE,eAAC,CAAC,AACF,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,aAAa,CAC9B,UAAU,CAAE,UAAU,CACtB,KAAK,CAAE,KAAK,CACZ,SAAS,CAAE,KAAK,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAC5B,SAAS,CAAE,IAAI,CACf,OAAO,CAAE,IAAI,CACb,aAAa,CAAE,GAAG,CAClB,aAAa,CAAE,IAAI,CACnB,WAAW,CAAE,MAAM,CACnB,UAAU,CAAE,KAAK,CACjB,UAAU,CAAE,CAAC,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,AAC1C,CAAC,AAED,IAAI,eAAC,CAAC,AACJ,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,SAAS,eAAC,CAAC,AACT,SAAS,CAAE,IAAI,CACf,MAAM,CAAE,CAAC,AACX,CAAC,AAED,SAAS,eAAC,CAAC,AACT,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,IAAI,CACnB,UAAU,CAAE,OAAO,CACnB,aAAa,CAAE,IAAI,AACrB,CAAC,AAED,KAAK,eAAC,CAAC,AACL,OAAO,CAAE,KAAK,CACd,WAAW,CAAE,GAAG,CAChB,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,IAAI,CACjB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,IAAI,AAClB,CAAC,AAED,KAAK,eAAC,CAAC,AACL,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,MAAM,eAAC,CAAC,AACN,OAAO,CAAE,KAAK,CACd,SAAS,CAAE,IAAI,CACf,KAAK,CAAE,IAAI,AACb,CAAC\"}"
+const css = {
+	code: "main.svelte-uw7wrw{text-align:center;background-color:#41563d;background-image:url(\"/bg.png\");background-repeat:repeat;background-attachment:fixed;height:100vh}main.svelte-uw7wrw,content.svelte-uw7wrw{font-family:\"Inter\", sans-serif;margin:0}content.svelte-uw7wrw{padding:48px 0}ul.svelte-uw7wrw{display:flex;flex-direction:column;align-items:center;padding:0;margin:0}page-title.svelte-uw7wrw{font-size:32px;font-weight:500;color:white;margin-bottom:32px}li.svelte-uw7wrw{display:flex;justify-content:space-between;box-sizing:border-box;width:640px;max-width:calc(100% - 32px);font-size:16px;padding:32px;border-radius:8px;margin-bottom:16px;place-items:center;background:white;box-shadow:0 8px 16px 0 rgba(0, 0, 0, 0.3)}team.svelte-uw7wrw{width:35%;text-align:center}team-name.svelte-uw7wrw{font-size:14px;margin:0}team-logo.svelte-uw7wrw{display:block;margin:0 auto;width:64px;height:64px;margin-bottom:16px;background:#f2f2f2;border-radius:32px}goals.svelte-uw7wrw{display:block;font-weight:500;font-size:32px;line-height:64px;margin:0 0 16px}score.svelte-uw7wrw{width:30%;text-align:center}status.svelte-uw7wrw{display:block;font-size:14px;color:#999}",
+	map: "{\"version\":3,\"file\":\"index.svelte\",\"sources\":[\"index.svelte\"],\"sourcesContent\":[\"<script context=\\\"module\\\">\\n  import ApolloClient, { gql } from \\\"apollo-boost\\\";\\n  import { LIVE } from \\\"../data\\\";\\n\\n  let client;\\n  export async function preload() {\\n    client = new ApolloClient({\\n      uri:\\n        \\\"https://emjxn6xptvbvlhcocrhq7gwhoy.appsync-api.ap-southeast-2.amazonaws.com/graphql\\\",\\n      headers: {\\n        \\\"x-api-key\\\": \\\"da2-htijskntwzehlai3cbhmt7c24e\\\"\\n      },\\n      fetch: this.fetch\\n    });\\n\\n    return {\\n      cache: await client.query({ query: LIVE })\\n    };\\n  }\\n</script>\\n\\n<script>\\n  import { getClient, restore, query } from \\\"svelte-apollo\\\";\\n\\n  export let cache;\\n  restore(client, LIVE, cache.data);\\n\\n  const live = query(client, { query: LIVE });\\n</script>\\n\\n<style>\\n  main {\\n    text-align: center;\\n    background-color: #41563d;\\n    background-image: url(\\\"/bg.png\\\");\\n    background-repeat: repeat;\\n    background-attachment: fixed;\\n    height: 100vh;\\n  }\\n  main,\\n  content {\\n    font-family: \\\"Inter\\\", sans-serif;\\n    margin: 0;\\n  }\\n\\n  content {\\n    padding: 48px 0;\\n  }\\n  ul {\\n    display: flex;\\n    flex-direction: column;\\n    align-items: center;\\n    padding: 0;\\n    margin: 0;\\n  }\\n\\n  page-title {\\n    font-size: 32px;\\n    font-weight: 500;\\n    color: white;\\n    margin-bottom: 32px;\\n  }\\n  li {\\n    display: flex;\\n    justify-content: space-between;\\n    box-sizing: border-box;\\n    width: 640px;\\n    max-width: calc(100% - 32px);\\n    font-size: 16px;\\n    padding: 32px;\\n    border-radius: 8px;\\n    margin-bottom: 16px;\\n    place-items: center;\\n    background: white;\\n    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.3);\\n  }\\n\\n  team {\\n    width: 35%;\\n    text-align: center;\\n  }\\n\\n  team-name {\\n    font-size: 14px;\\n    margin: 0;\\n  }\\n\\n  team-logo {\\n    display: block;\\n    margin: 0 auto;\\n    width: 64px;\\n    height: 64px;\\n    margin-bottom: 16px;\\n    background: #f2f2f2;\\n    border-radius: 32px;\\n  }\\n\\n  goals {\\n    display: block;\\n    font-weight: 500;\\n    font-size: 32px;\\n    line-height: 64px;\\n    margin: 0 0 16px;\\n  }\\n\\n  score {\\n    width: 30%;\\n    text-align: center;\\n  }\\n\\n  status {\\n    display: block;\\n    font-size: 14px;\\n    color: #999;\\n  }\\n</style>\\n\\n<main>\\n  <content>\\n    <page-title>Live Results</page-title>\\n    <ul>\\n      {#await $live}\\n        <li>Loading...</li>\\n      {:then result}\\n        {#each result.data.fixtures as fixture (fixture.fixture_id)}\\n          <li>\\n            <team>\\n              <team-logo />\\n              <team-name>{fixture.homeTeam}</team-name>\\n            </team>\\n            <score>\\n              <goals>{fixture.goalsHomeTeam} – {fixture.goalsAwayTeam}</goals>\\n              <status>{fixture.statusShort}</status>\\n            </score>\\n            <team>\\n              <team-logo />\\n              <team-name>{fixture.awayTeam}</team-name>\\n            </team>\\n          </li>\\n        {:else}\\n          <li>No games live</li>\\n        {/each}\\n      {:catch error}\\n        <li>Error loading games: {error}</li>\\n      {/await}\\n    </ul>\\n  </content>\\n</main>\\n\"],\"names\":[],\"mappings\":\"AA+BE,IAAI,cAAC,CAAC,AACJ,UAAU,CAAE,MAAM,CAClB,gBAAgB,CAAE,OAAO,CACzB,gBAAgB,CAAE,IAAI,SAAS,CAAC,CAChC,iBAAiB,CAAE,MAAM,CACzB,qBAAqB,CAAE,KAAK,CAC5B,MAAM,CAAE,KAAK,AACf,CAAC,AACD,kBAAI,CACJ,OAAO,cAAC,CAAC,AACP,WAAW,CAAE,OAAO,CAAC,CAAC,UAAU,CAChC,MAAM,CAAE,CAAC,AACX,CAAC,AAED,OAAO,cAAC,CAAC,AACP,OAAO,CAAE,IAAI,CAAC,CAAC,AACjB,CAAC,AACD,EAAE,cAAC,CAAC,AACF,OAAO,CAAE,IAAI,CACb,cAAc,CAAE,MAAM,CACtB,WAAW,CAAE,MAAM,CACnB,OAAO,CAAE,CAAC,CACV,MAAM,CAAE,CAAC,AACX,CAAC,AAED,UAAU,cAAC,CAAC,AACV,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,GAAG,CAChB,KAAK,CAAE,KAAK,CACZ,aAAa,CAAE,IAAI,AACrB,CAAC,AACD,EAAE,cAAC,CAAC,AACF,OAAO,CAAE,IAAI,CACb,eAAe,CAAE,aAAa,CAC9B,UAAU,CAAE,UAAU,CACtB,KAAK,CAAE,KAAK,CACZ,SAAS,CAAE,KAAK,IAAI,CAAC,CAAC,CAAC,IAAI,CAAC,CAC5B,SAAS,CAAE,IAAI,CACf,OAAO,CAAE,IAAI,CACb,aAAa,CAAE,GAAG,CAClB,aAAa,CAAE,IAAI,CACnB,WAAW,CAAE,MAAM,CACnB,UAAU,CAAE,KAAK,CACjB,UAAU,CAAE,CAAC,CAAC,GAAG,CAAC,IAAI,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,CAAC,GAAG,CAAC,AAC7C,CAAC,AAED,IAAI,cAAC,CAAC,AACJ,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,SAAS,cAAC,CAAC,AACT,SAAS,CAAE,IAAI,CACf,MAAM,CAAE,CAAC,AACX,CAAC,AAED,SAAS,cAAC,CAAC,AACT,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,KAAK,CAAE,IAAI,CACX,MAAM,CAAE,IAAI,CACZ,aAAa,CAAE,IAAI,CACnB,UAAU,CAAE,OAAO,CACnB,aAAa,CAAE,IAAI,AACrB,CAAC,AAED,KAAK,cAAC,CAAC,AACL,OAAO,CAAE,KAAK,CACd,WAAW,CAAE,GAAG,CAChB,SAAS,CAAE,IAAI,CACf,WAAW,CAAE,IAAI,CACjB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,IAAI,AAClB,CAAC,AAED,KAAK,cAAC,CAAC,AACL,KAAK,CAAE,GAAG,CACV,UAAU,CAAE,MAAM,AACpB,CAAC,AAED,MAAM,cAAC,CAAC,AACN,OAAO,CAAE,KAAK,CACd,SAAS,CAAE,IAAI,CACf,KAAK,CAAE,IAAI,AACb,CAAC\"}"
 };
 
 
 
 let client;
-async function preload$2() {
+async function preload() {
   client = new DefaultClient({
-    uri: 'https://emjxn6xptvbvlhcocrhq7gwhoy.appsync-api.ap-southeast-2.amazonaws.com/graphql',
+    uri:
+      "https://emjxn6xptvbvlhcocrhq7gwhoy.appsync-api.ap-southeast-2.amazonaws.com/graphql",
     headers: {
-      'x-api-key': 'da2-htijskntwzehlai3cbhmt7c24e'
+      "x-api-key": "da2-htijskntwzehlai3cbhmt7c24e"
     },
     fetch: this.fetch
   });
@@ -24008,7 +23773,7 @@ async function preload$2() {
   };
 }
 
-const Live = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
+const Index = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
 	let $live;
 
 	let { cache } = $$props;
@@ -24018,82 +23783,46 @@ const Live = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
 
 	if ($$props.cache === void 0 && $$bindings.cache && cache !== void 0) $$bindings.cache(cache);
 
-	$$result.css.add(css$3);
+	$$result.css.add(css);
 
 	$live = get_store_value(live);
 
-	return `<main class="svelte-14rfua7">
-	  <content class="svelte-14rfua7">
-	    <ul>
-	    ${(function(__value) { if(is_promise(__value)) return `
-	      <li class="svelte-14rfua7">Loading...</li>
-	    `; return function(result) { return `
-	      ${result.data.fixtures.length ? each(result.data.fixtures, (fixture) => `<li class="svelte-14rfua7">
-	          <team class="svelte-14rfua7">
-	            <team-logo class="svelte-14rfua7"></team-logo>
-	            <team-name class="svelte-14rfua7">${escape(fixture.homeTeam)}</team-name>
-	          </team>
-	          <score class="svelte-14rfua7">
-	            <goals class="svelte-14rfua7">${escape(fixture.goalsHomeTeam)} – ${escape(fixture.goalsAwayTeam)}</goals>
-	            <status class="svelte-14rfua7">${escape(fixture.statusShort)}</status>
-	          </score>
-	          <team class="svelte-14rfua7">
-	            <team-logo class="svelte-14rfua7"></team-logo>
-	            <team-name class="svelte-14rfua7">${escape(fixture.awayTeam)}</team-name>
-	          </team>
-	        </li>`) : `<li class="svelte-14rfua7">No games live</li>`}
-	    `;}(__value);}($live)) }
+	return `<main class="svelte-uw7wrw">
+	  <content class="svelte-uw7wrw">
+	    <page-title class="svelte-uw7wrw">Live Results</page-title>
+	    <ul class="svelte-uw7wrw">
+	      ${(function(__value) { if(is_promise(__value)) return `
+	        <li class="svelte-uw7wrw">Loading...</li>
+	      `; return function(result) { return `
+	        ${result.data.fixtures.length ? each(result.data.fixtures, (fixture) => `<li class="svelte-uw7wrw">
+	            <team class="svelte-uw7wrw">
+	              <team-logo class="svelte-uw7wrw"></team-logo>
+	              <team-name class="svelte-uw7wrw">${escape(fixture.homeTeam)}</team-name>
+	            </team>
+	            <score class="svelte-uw7wrw">
+	              <goals class="svelte-uw7wrw">${escape(fixture.goalsHomeTeam)} – ${escape(fixture.goalsAwayTeam)}</goals>
+	              <status class="svelte-uw7wrw">${escape(fixture.statusShort)}</status>
+	            </score>
+	            <team class="svelte-uw7wrw">
+	              <team-logo class="svelte-uw7wrw"></team-logo>
+	              <team-name class="svelte-uw7wrw">${escape(fixture.awayTeam)}</team-name>
+	            </team>
+	          </li>`) : `<li class="svelte-uw7wrw">No games live</li>`}
+	      `;}(__value);}($live)) }
 	    </ul>
 	  </content>
 	</main>`;
 });
 
-/* src/components/Nav.svelte generated by Svelte v3.4.2 */
-
-const css$4 = {
-	code: "nav.svelte-11kwxiv{border-bottom:1px solid rgba(255,62,0,0.1);font-weight:300;padding:0 1em}ul.svelte-11kwxiv{margin:0;padding:0}ul.svelte-11kwxiv::after{content:'';display:block;clear:both}li.svelte-11kwxiv{display:block;float:left}.selected.svelte-11kwxiv{position:relative;display:inline-block}.selected.svelte-11kwxiv::after{position:absolute;content:'';width:calc(100% - 1em);height:2px;background-color:rgb(255,62,0);display:block;bottom:-1px}a.svelte-11kwxiv{text-decoration:none;padding:1em 0.5em;display:block}",
-	map: "{\"version\":3,\"file\":\"Nav.svelte\",\"sources\":[\"Nav.svelte\"],\"sourcesContent\":[\"<script>\\n\\texport let segment;\\n</script>\\n\\n<style>\\n\\tnav {\\n\\t\\tborder-bottom: 1px solid rgba(255,62,0,0.1);\\n\\t\\tfont-weight: 300;\\n\\t\\tpadding: 0 1em;\\n\\t}\\n\\n\\tul {\\n\\t\\tmargin: 0;\\n\\t\\tpadding: 0;\\n\\t}\\n\\n\\t/* clearfix */\\n\\tul::after {\\n\\t\\tcontent: '';\\n\\t\\tdisplay: block;\\n\\t\\tclear: both;\\n\\t}\\n\\n\\tli {\\n\\t\\tdisplay: block;\\n\\t\\tfloat: left;\\n\\t}\\n\\n\\t.selected {\\n\\t\\tposition: relative;\\n\\t\\tdisplay: inline-block;\\n\\t}\\n\\n\\t.selected::after {\\n\\t\\tposition: absolute;\\n\\t\\tcontent: '';\\n\\t\\twidth: calc(100% - 1em);\\n\\t\\theight: 2px;\\n\\t\\tbackground-color: rgb(255,62,0);\\n\\t\\tdisplay: block;\\n\\t\\tbottom: -1px;\\n\\t}\\n\\n\\ta {\\n\\t\\ttext-decoration: none;\\n\\t\\tpadding: 1em 0.5em;\\n\\t\\tdisplay: block;\\n\\t}\\n</style>\\n\\n<nav>\\n\\t<ul>\\n\\t\\t<li><a class='{segment === undefined ? \\\"selected\\\" : \\\"\\\"}' href='.'>home</a></li>\\n\\t\\t<li><a rel=prefetch class='{segment === \\\"live\\\" ? \\\"selected\\\" : \\\"\\\"}' href='live'>live</a></li>\\n\\t</ul>\\n</nav>\"],\"names\":[],\"mappings\":\"AAKC,GAAG,eAAC,CAAC,AACJ,aAAa,CAAE,GAAG,CAAC,KAAK,CAAC,KAAK,GAAG,CAAC,EAAE,CAAC,CAAC,CAAC,GAAG,CAAC,CAC3C,WAAW,CAAE,GAAG,CAChB,OAAO,CAAE,CAAC,CAAC,GAAG,AACf,CAAC,AAED,EAAE,eAAC,CAAC,AACH,MAAM,CAAE,CAAC,CACT,OAAO,CAAE,CAAC,AACX,CAAC,AAGD,iBAAE,OAAO,AAAC,CAAC,AACV,OAAO,CAAE,EAAE,CACX,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACZ,CAAC,AAED,EAAE,eAAC,CAAC,AACH,OAAO,CAAE,KAAK,CACd,KAAK,CAAE,IAAI,AACZ,CAAC,AAED,SAAS,eAAC,CAAC,AACV,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,YAAY,AACtB,CAAC,AAED,wBAAS,OAAO,AAAC,CAAC,AACjB,QAAQ,CAAE,QAAQ,CAClB,OAAO,CAAE,EAAE,CACX,KAAK,CAAE,KAAK,IAAI,CAAC,CAAC,CAAC,GAAG,CAAC,CACvB,MAAM,CAAE,GAAG,CACX,gBAAgB,CAAE,IAAI,GAAG,CAAC,EAAE,CAAC,CAAC,CAAC,CAC/B,OAAO,CAAE,KAAK,CACd,MAAM,CAAE,IAAI,AACb,CAAC,AAED,CAAC,eAAC,CAAC,AACF,eAAe,CAAE,IAAI,CACrB,OAAO,CAAE,GAAG,CAAC,KAAK,CAClB,OAAO,CAAE,KAAK,AACf,CAAC\"}"
-};
-
-const Nav = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let { segment } = $$props;
-
-	if ($$props.segment === void 0 && $$bindings.segment && segment !== void 0) $$bindings.segment(segment);
-
-	$$result.css.add(css$4);
-
-	return `<nav class="svelte-11kwxiv">
-		<ul class="svelte-11kwxiv">
-			<li class="svelte-11kwxiv"><a class="${escape(segment === undefined ? "selected" : "")} svelte-11kwxiv" href=".">home</a></li>
-			<li class="svelte-11kwxiv"><a rel="prefetch" class="${escape(segment === "live" ? "selected" : "")} svelte-11kwxiv" href="live">live</a></li>
-		</ul>
-	</nav>`;
-});
-
-/* src/routes/_layout.svelte generated by Svelte v3.4.2 */
-
-const css$5 = {
-	code: "main.svelte-lw07cr{position:relative;max-width:56em;text-align:center;background-color:#41563D;background-image:url('/bg.png');background-repeat:repeat;background-attachment:fixed;padding:2em;margin:0 auto;box-sizing:border-box}",
-	map: "{\"version\":3,\"file\":\"_layout.svelte\",\"sources\":[\"_layout.svelte\"],\"sourcesContent\":[\"<script>\\n\\timport Nav from '../components/Nav.svelte';\\n\\n\\texport let segment;\\n</script>\\n\\n<style>\\n\\tmain {\\n\\t\\tposition: relative;\\n\\t\\tmax-width: 56em;\\n\\t\\ttext-align: center;\\n    background-color: #41563D;\\n    background-image: url('/bg.png');\\n    background-repeat: repeat;\\n    background-attachment: fixed;\\n\\t\\tpadding: 2em;\\n\\t\\tmargin: 0 auto;\\n\\t\\tbox-sizing: border-box;\\n\\t}\\n</style>\\n\\n<Nav {segment}/>\\n\\n<main>\\n\\t<slot></slot>\\n</main>\"],\"names\":[],\"mappings\":\"AAOC,IAAI,cAAC,CAAC,AACL,QAAQ,CAAE,QAAQ,CAClB,SAAS,CAAE,IAAI,CACf,UAAU,CAAE,MAAM,CAChB,gBAAgB,CAAE,OAAO,CACzB,gBAAgB,CAAE,IAAI,SAAS,CAAC,CAChC,iBAAiB,CAAE,MAAM,CACzB,qBAAqB,CAAE,KAAK,CAC9B,OAAO,CAAE,GAAG,CACZ,MAAM,CAAE,CAAC,CAAC,IAAI,CACd,UAAU,CAAE,UAAU,AACvB,CAAC\"}"
-};
+/* src/node_modules/@sapper/internal/layout.svelte generated by Svelte v3.4.2 */
 
 const Layout = create_ssr_component(($$result, $$props, $$bindings, $$slots) => {
-	let { segment } = $$props;
-
-	if ($$props.segment === void 0 && $$bindings.segment && segment !== void 0) $$bindings.segment(segment);
-
-	$$result.css.add(css$5);
-
-	return `${validate_component(Nav, 'Nav').$$render($$result, { segment: segment }, {}, {})}
-
-	<main class="svelte-lw07cr">
-		${$$slots.default ? $$slots.default() : ``}
-	</main>`;
+	return `${$$slots.default ? $$slots.default() : ``}`;
 });
 
 /* src/routes/_error.svelte generated by Svelte v3.4.2 */
 
-const css$6 = {
+const css$1 = {
 	code: "h1.svelte-8od9u6,p.svelte-8od9u6{margin:0 auto}h1.svelte-8od9u6{font-size:2.8em;font-weight:700;margin:0 0 0.5em 0}p.svelte-8od9u6{margin:1em auto}@media(min-width: 480px){h1.svelte-8od9u6{font-size:4em}}",
 	map: "{\"version\":3,\"file\":\"_error.svelte\",\"sources\":[\"_error.svelte\"],\"sourcesContent\":[\"<script>\\n\\texport let status;\\n\\texport let error;\\n\\n\\tconst dev = undefined === 'development';\\n</script>\\n\\n<style>\\n\\th1, p {\\n\\t\\tmargin: 0 auto;\\n\\t}\\n\\n\\th1 {\\n\\t\\tfont-size: 2.8em;\\n\\t\\tfont-weight: 700;\\n\\t\\tmargin: 0 0 0.5em 0;\\n\\t}\\n\\n\\tp {\\n\\t\\tmargin: 1em auto;\\n\\t}\\n\\n\\t@media (min-width: 480px) {\\n\\t\\th1 {\\n\\t\\t\\tfont-size: 4em;\\n\\t\\t}\\n\\t}\\n</style>\\n\\n<svelte:head>\\n\\t<title>{status}</title>\\n</svelte:head>\\n\\n<h1>{status}</h1>\\n\\n<p>{error.message}</p>\\n\\n{#if dev && error.stack}\\n\\t<pre>{error.stack}</pre>\\n{/if}\\n\"],\"names\":[],\"mappings\":\"AAQC,gBAAE,CAAE,CAAC,cAAC,CAAC,AACN,MAAM,CAAE,CAAC,CAAC,IAAI,AACf,CAAC,AAED,EAAE,cAAC,CAAC,AACH,SAAS,CAAE,KAAK,CAChB,WAAW,CAAE,GAAG,CAChB,MAAM,CAAE,CAAC,CAAC,CAAC,CAAC,KAAK,CAAC,CAAC,AACpB,CAAC,AAED,CAAC,cAAC,CAAC,AACF,MAAM,CAAE,GAAG,CAAC,IAAI,AACjB,CAAC,AAED,MAAM,AAAC,YAAY,KAAK,CAAC,AAAC,CAAC,AAC1B,EAAE,cAAC,CAAC,AACH,SAAS,CAAE,GAAG,AACf,CAAC,AACF,CAAC\"}"
 };
@@ -24104,7 +23833,7 @@ const Error$1 = create_ssr_component(($$result, $$props, $$bindings, $$slots) =>
 	if ($$props.status === void 0 && $$bindings.status && status !== void 0) $$bindings.status(status);
 	if ($$props.error === void 0 && $$bindings.error && error !== void 0) $$bindings.error(error);
 
-	$$result.css.add(css$6);
+	$$result.css.add(css$1);
 
 	return `${($$result.head += `<title>${escape(status)}</title>`, "")}
 
@@ -24117,23 +23846,9 @@ const Error$1 = create_ssr_component(($$result, $$props, $$bindings, $$slots) =>
 
 // This file is generated by Sapper — do not edit it!
 
-const d$1 = decodeURIComponent;
-
 const manifest = {
 	server_routes: [
-		{
-			// blog/index.json.js
-			pattern: /^\/blog.json$/,
-			handlers: route_0,
-			params: () => ({})
-		},
-
-		{
-			// blog/[slug].json.js
-			pattern: /^\/blog\/([^\/]+?).json$/,
-			handlers: route_1,
-			params: match => ({ slug: d$1(match[1]) })
-		}
+		
 	],
 
 	pages: [
@@ -24141,40 +23856,7 @@ const manifest = {
 			// index.svelte
 			pattern: /^\/$/,
 			parts: [
-				{ name: "index", file: "index.svelte", component: Index }
-			]
-		},
-
-		{
-			// about.svelte
-			pattern: /^\/about\/?$/,
-			parts: [
-				{ name: "about", file: "about.svelte", component: About }
-			]
-		},
-
-		{
-			// blog/index.svelte
-			pattern: /^\/blog\/?$/,
-			parts: [
-				{ name: "blog", file: "blog/index.svelte", component: Index$1, preload: preload }
-			]
-		},
-
-		{
-			// blog/[slug].svelte
-			pattern: /^\/blog\/([^\/]+?)\/?$/,
-			parts: [
-				null,
-				{ name: "blog_$slug", file: "blog/[slug].svelte", component: Slug, preload: preload$1, params: match => ({ slug: d$1(match[1]) }) }
-			]
-		},
-
-		{
-			// live.svelte
-			pattern: /^\/live\/?$/,
-			parts: [
-				{ name: "live", file: "live.svelte", component: Live, preload: preload$2 }
+				{ name: "index", file: "index.svelte", component: Index, preload: preload }
 			]
 		}
 	],
@@ -26695,7 +26377,7 @@ mime_raw.split('\n').forEach((row) => {
 	});
 });
 
-function lookup$1(file) {
+function lookup(file) {
 	const match = /\.([^\.]+)$/.exec(file);
 	return match && map$1.get(match[1]);
 }
@@ -26803,7 +26485,7 @@ function serve({ prefix, pathname, cache_control }
 
 	return (req, res, next) => {
 		if (filter(req)) {
-			const type = lookup$1(req.path);
+			const type = lookup(req.path);
 
 			try {
 				const file = decodeURIComponent(req.path.slice(1));
