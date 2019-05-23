@@ -1,0 +1,8 @@
+{
+  "name": "svelte-demo",
+  "version": 2,
+  "builds": [{ "src": "__sapper__/build/index.js", "use": "@now/node" }],
+  "regions": [
+    "syd1"
+  ]
+}
