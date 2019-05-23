@@ -1,9 +1,10 @@
 <script context="module">
   import ApolloClient, { gql } from "apollo-boost";
-  import { LIVE } from "../data";
+  import { FIXTURES } from "../../data";
 
   let client;
-  export async function preload() {
+  export async function preload(page) {
+    const { slug } = page.params;
     client = new ApolloClient({
       uri:
         "https://emjxn6xptvbvlhcocrhq7gwhoy.appsync-api.ap-southeast-2.amazonaws.com/graphql",
@@ -14,7 +15,7 @@
     });
 
     return {
-      cache: await client.query({ query: LIVE })
+      cache: await client.query({ query: FIXTURES, variables: { date: slug } })
     };
   }
 </script>
@@ -23,9 +24,9 @@
   import { getClient, restore, query } from "svelte-apollo";
 
   export let cache;
-  restore(client, LIVE, cache.data);
+  restore(client, FIXTURES, cache.data);
 
-  const live = query(client, { query: LIVE });
+  const fixtures = query(client, { query: FIXTURES });
 </script>
 
 <style>
@@ -35,7 +36,7 @@
     background-image: url("/bg.png");
     background-repeat: repeat;
     background-attachment: fixed;
-    height: 100vh;
+    height: 100%;
   }
   main,
   content {
@@ -80,6 +81,7 @@
       padding: 24px 8px;
     }
   }
+
   team {
     width: 35%;
     text-align: center;
@@ -125,7 +127,7 @@
   <content>
     <page-title>Live Results</page-title>
     <ul>
-      {#await $live}
+      {#await $fixtures}
         <li>Loading...</li>
       {:then result}
         {#each result.data.fixtures as fixture (fixture.fixture_id)}
@@ -135,7 +137,9 @@
               <team-name>{fixture.homeTeam}</team-name>
             </team>
             <score>
-              <goals>{fixture.goalsHomeTeam} – {fixture.goalsAwayTeam}</goals>
+              <goals>
+                 {fixture.goalsHomeTeam || 0} – {fixture.goalsAwayTeam || 0}
+              </goals>
               <status>{fixture.statusShort}</status>
             </score>
             <team>
