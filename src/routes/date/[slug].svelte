@@ -38,7 +38,6 @@
     background-image: url("/bg.png");
     background-repeat: repeat;
     background-attachment: fixed;
-    height: 100%;
   }
   main,
   content {
@@ -101,7 +100,7 @@
     margin: 0;
   }
 
-  team-logo {
+   img {
     display: block;
     margin: 0 auto;
     width: 64px;
@@ -140,21 +139,19 @@
       {#await $fixtures}
         <li>Loading...</li>
       {:then result}
-        {#each result.data.fixtures as fixture (fixture.fixture_id)}
+        {#each result.data.fixtures.sort((a, b) => a.league_id - b.league_id || a.fixture_id - b.fixture_id) as fixture (fixture.fixture_id)}
           <li>
             <team>
-              <team-logo />
-              <team-name>{fixture.homeTeam}</team-name>
+              <img src={fixture.homeTeam.logo} alt={fixture.homeTeam.team_name} />
+              <team-name>{fixture.homeTeam.team_name}</team-name>
             </team>
             <score>
-              <goals>
-                 {fixture.goalsHomeTeam || 0} – {fixture.goalsAwayTeam || 0}
-              </goals>
+              <goals>{fixture.goalsHomeTeam || 0} – {fixture.goalsAwayTeam || 0}</goals>
               <status>{fixture.statusShort}</status>
             </score>
             <team>
-              <team-logo />
-              <team-name>{fixture.awayTeam}</team-name>
+              <img src={fixture.awayTeam.logo} alt={fixture.awayTeam.team_name} />
+              <team-name>{fixture.awayTeam.team_name}</team-name>
             </team>
           </li>
         {:else}

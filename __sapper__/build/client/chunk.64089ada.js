@@ -2,31 +2,47 @@ import{A as e,B as t}from"./chunk.f2dfe1da.js";var r=function(e,t){return(r=Obje
 query live {
   fixtures: live {
     fixture_id
-    league_id
-    homeTeam
-    awayTeam
-    statusShort
-    goalsHomeTeam
-    goalsAwayTeam
-    halftime_score
-    final_score
-    penalty
+      league_id
+      league {
+        logo
+      }
+      homeTeam {
+        team_id
+        team_name
+        logo
+      }
+      awayTeam {
+        team_id
+        team_name
+        logo
+      }
+      statusShort
+      goalsHomeTeam
+      goalsAwayTeam
   }
 }
 `,ii=ei`
 query fixtures($date: String!) {
   fixtures(date: $date) {
     fixture_id
-    league_id
-    homeTeam
-    awayTeam
-    statusShort
-    goalsHomeTeam
-    goalsAwayTeam
-    halftime_score
-    final_score
-    penalty
+      league_id
+      league {
+        logo
+      }
+      homeTeam {
+        team_id
+        team_name
+        logo
+      }
+      awayTeam {
+        team_id
+        team_name
+        logo
+      }
+      statusShort
+      goalsHomeTeam
+      goalsAwayTeam
   }
 }
 `;var oi;var ai=function(){};function ui(t,r){return n=t,oi||(oi="function"==typeof Symbol&&Symbol.observable||"@@observable"),n&&n[oi]&&n[oi]()===n?e(void 0,function(e){var n=function(e,t){var r,n,i=void 0!==t;return e(i?t:new Promise(function(e,t){r=e,n=t})),{fulfill:function(t){if(i)return e(Promise.resolve(t));i=!0,r(t)},reject:function(t){if(i)return e(Promise.reject(t));i=!0,n(t)}}}(e,r),i=n.fulfill,o=n.reject,a=t.subscribe({next:function(e){i(e)},error:function(e){o(e)}});return function(){return a.unsubscribe()}}):e(t,ai);var n}var si="undefined"!=typeof WeakSet?new WeakSet:new Set;function ci(e,r,n){si.add(e),function(e){try{t(e)}catch(t){setTimeout(e,1)}}(function(){si.delete(e)}),e.writeQuery({query:r,data:n})}function li(t,r){var n,i=!1;if(si.has(t))try{n={data:n=t.readQuery(r)||void 0}}catch(e){}var o=t.watchQuery(r),a=ui(o,n).subscribe;return{subscribe:e(n,function(e){i=!0;var t=void 0!==n,r=!1,o=!1;return a(function(n){t&&r&&!o?o=!0:(r||(r=!0),e(n))})}).subscribe,refetch:function(e){return!i&&ce(e,o.variables)?o.result():o.refetch(e)},result:function(){return o.result()},fetchMore:function(e){return o.fetchMore(e)},setOptions:function(e){return o.setOptions(e)},updateQuery:function(e){return o.updateQuery(e)},startPolling:function(e){return o.startPolling(e)},stopPolling:function(){return o.stopPolling()},subscribeToMore:function(e){return o.subscribeToMore(e)}}}export{ri as a,ni as b,ci as c,li as d,ii as e};
-//# sourceMappingURL=chunk.eed95207.js.map
+//# sourceMappingURL=chunk.64089ada.js.map
