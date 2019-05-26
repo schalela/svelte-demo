@@ -30,6 +30,7 @@
 
 <style>
   main {
+    padding: 48px 0;
     text-align: center;
     background-color: #41563d;
     background-image: url("/bg.png");
