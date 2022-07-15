@@ -2043,9 +2043,9 @@ svelte-observable@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/svelte-observable/-/svelte-observable-0.4.0.tgz#74756e42fa3516c154d53f4244fa9cf691854224"
 
-svelte@^3.0.0:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.4.2.tgz#55e34d7a53f9a732387dbf0fcb68e2fa4b598c93"
+svelte@^3.49.0:
+  version "3.49.0"
+  resolved "https://registry.yarnpkg.com/svelte/-/svelte-3.49.0.tgz#5baee3c672306de1070c3b7888fc2204e36a4029"
 
 symbol-observable@^1.0.2:
   version "1.2.0"
